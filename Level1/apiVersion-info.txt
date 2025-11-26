@@ -1,0 +1,12 @@
+KUBERNETES WORKLOAD API VERSIONS - QUICK REFERENCE
+==================================================
+
+CORE WORKLOADS
+--------------
+Pod                 → v1
+Deployment          → apps/v1
+ReplicaSet          → apps/v1
+StatefulSet         → apps/v1
+DaemonSet           → apps/v1
+Job                 → batch/v1
+CronJob             → batch/v1

@@ -1,0 +1,60 @@
+What is a Namespace?
+A namespace is just an empty logical container or virtual cluster within Kubernetes. It's like creating an empty folder - nothing is inside it until you put something there.
+Think of it like this:
+Namespace = Empty Box 📦
+
+You need to manually put things inside:
+- Pods
+- Deployments
+- Services
+- ConfigMaps
+- Secrets
+- etc.
+
+What Happens When You Create a Namespace?
+kubectl create namespace dev
+
+This only creates an empty namespace called dev. Nothing else.
+You Must Explicitly Create Resources
+
+What Namespace Actually Partitions
+
+Namespaces separate almost all types of Kubernetes resources, including:
+✅ Workloads
+
+Pods
+Deployments
+StatefulSets
+DaemonSets
+Jobs
+CronJobs
+ReplicaSets
+
+✅ Networking
+
+Services
+Ingress
+
+✅ Configuration
+
+ConfigMaps
+Secrets
+
+✅ Storage
+
+PersistentVolumeClaims
+
+✅ Access Control
+
+ServiceAccounts
+RoleBindings
+Roles
+
+Note : If you create a k8s resource without assigning t to a namespace it gets assigned to the default namespace . 
+You cannot create a k8s workload resource first and then create a namespace later . It doesnt work like that .
+You have to first create a namespace and then create workload resources and assign them to the desired namespace .
+If incase you want to create a namespace at a later point of time then you have to delete the workloads and recreate those workloads to the newly created namespace .
+
+
+
+

@@ -1,0 +1,15 @@
+#Check the deployment status.
+kubectl get deployment 
+kubectl describe deployment nginx-deployment
+
+#Rollback the deployment to previous state .
+kubectl rollout undo deployment/nginx-deployment 
+
+#Monitor the rollback process.
+kubectl rollout status deployment/nginx-deployment
+
+#Verify the task .
+kubectl get deployment
+kubectl describe deployment nginx-deployment | grep Image
+kubectl get pods
+kubectl rollout history deployment/nginx-deployment

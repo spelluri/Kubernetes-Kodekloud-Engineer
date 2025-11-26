@@ -1,0 +1,20 @@
+#Check the current deployment status.
+kubectl get deployment nginx-deployment
+kubectl describe deployment nginx-deployment
+
+#Update the deployment to use the new image .
+kubectl set image deployment/nginx-deployment nginx=nginx:1.17
+
+Note: If the container name isn't nginx, you can find it first with:
+kubectl describe deployment nginx-deployment | grep -i image
+Then use the actual container name in the command.
+
+#watch the rolling update in progress:
+kubectl rollout status deployment/nginx-deployment
+
+# Verify all pods are running 
+kubectl get pods
+kubectl describe deployment nginx-deployment | grep -i image
+
+#Checkout the rollout history.
+kubectl rollout history deployment/nginx-deployment

@@ -1,0 +1,11 @@
+#Execute the relica set yaml file 
+kubectl apply -f replicaset.yaml
+
+#Verify the task
+kubectl get replicaset
+
+# Check labels
+kubectl get rs httpd-replicaset --show-labels
+
+# Check pods with labels
+kubectl get pods -l app=httpd_app,type=front-end

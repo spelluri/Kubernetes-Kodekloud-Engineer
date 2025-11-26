@@ -1,0 +1,5 @@
+# Execute cronjob yaml file
+kubectl apply -f cronjob.yaml
+
+#verify the task
+kubectl get cronjob

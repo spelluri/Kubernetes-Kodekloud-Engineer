@@ -1,0 +1,13 @@
+What's Happening Behind the Scenes
+
+During the rolling update:
+
+Kubernetes creates new pods with the nginx:1.17 image
+Once a new pod is ready, it terminates an old pod
+This continues until all pods are running the new version
+Your application stays available throughout (zero downtime!)
+
+If Something Goes Wrong
+If you need to rollback:
+bashkubectl rollout undo deployment/nginx-deployment
+This will revert to the previous version of your deployment.

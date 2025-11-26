@@ -1,0 +1,8 @@
+# Execute namespace.yaml 
+kubectl apply -f namespace.yaml
+#Execute pod.yaml
+kubectl apply -f pod.yaml
+#Validate if namespace is created correctly .
+kubectl get namespace
+#Validate the pod that you created just now .
+kubectl get pods -n dev

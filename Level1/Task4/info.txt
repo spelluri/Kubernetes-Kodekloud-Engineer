@@ -1,0 +1,95 @@
+What Are Resource Limits?
+Resource limits are like setting rules for how much CPU and memory (RAM) each container can use in your Kubernetes cluster.
+
+🍕 Pizza Analogy
+Imagine your Kubernetes cluster is a pizza with 8 slices:
+
+Without Limits:
+Person A: "I'm hungry!" *takes 6 slices*
+Person B: "I'm hungry too!" *only 2 slices left*
+Person C: "Me too!" *no slices left* 😢
+
+With Limits:
+Rule: Each person can take MAX 2 slices
+
+Person A: *takes 2 slices* ✅
+Person B: *takes 2 slices* ✅
+Person C: *takes 2 slices* ✅
+Everyone gets to eat! 🎉
+
+Real Kubernetes Example
+
+Your Server Has:
+4 CPU cores
+8 GB RAM
+
+Without Limits:
+App A: Uses 3 CPUs and 6 GB RAM (greedy!)
+App B: Uses 1 CPU and 2 GB RAM (struggling)
+App C: *crashes* - not enough resources left! 💥
+
+With Limits:
+App A: Limited to 1 CPU and 2 GB RAM ✅
+App B: Limited to 1 CPU and 2 GB RAM ✅
+App C: Limited to 1 CPU and 2 GB RAM ✅
+All apps run smoothly!
+
+Two Types of Resource Controls
+1. Requests (Minimum Guarantee)
+
+"I need at least this much to run"
+Like reserving a seat on a bus
+
+yamlresources:
+  requests:
+    memory: "256Mi"  # I need at least 256 MB
+    cpu: "250m"      # I need at least 0.25 CPU
+Translation: "Give me at least 256 MB RAM and 0.25 CPU, or don't start me at all"
+
+2. Limits (Maximum Allowed)
+
+"I cannot use more than this much"
+Like a speed limit on a highway
+
+yamlresources:
+  limits:
+    memory: "512Mi"  # I can't use more than 512 MB
+    cpu: "500m"      # I can't use more than 0.5 CPU
+Translation: "Even if I want more, stop me at 512 MB RAM and 0.5 CPU"
+
+Complete Example  :
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+    - name: app
+      image: nginx
+      resources:
+        requests:           # What I need minimum
+          memory: "128Mi"   # Need at least 128 MB
+          cpu: "100m"       # Need at least 0.1 CPU
+        limits:             # What I can't exceed
+          memory: "256Mi"   # Can't use more than 256 MB
+          cpu: "200m"       # Can't use more than 0.2 CPU
+```
+
+---
+
+## What Happens When Limits Are Exceeded?
+
+### Memory Limit Exceeded:
+```
+App tries to use 300 MB (limit is 256 MB)
+→ Kubernetes KILLS the pod 💀
+→ Pod restarts (OOMKilled = Out Of Memory Killed)
+```
+
+### CPU Limit Exceeded:
+```
+App tries to use 0.5 CPU (limit is 0.2 CPU)
+→ Kubernetes THROTTLES it (slows it down) 🐌
+→ App runs slower but doesn't crash
+

@@ -1,0 +1,16 @@
+A rolling update is like renovating a busy restaurant one table at a time while keeping it open for customers.
+Imagine you need to update your restaurant's furniture. Instead of closing the whole place down, replacing everything at once, and then reopening, you do this:
+
+You replace the furniture at table 1 while customers sit at tables 2, 3, and 4
+Once table 1 is done, you move to table 2 while people can now use table 1 or sit at 3 and 4
+You continue this pattern until all tables are updated
+
+In the tech world, this same concept applies when updating software or apps:
+
+You're running an app on multiple servers (let's say 10 of them)
+Instead of shutting down all 10 servers, updating them, and bringing them back online (which would cause downtime for users), you update them one or a few at a time
+Server 1 gets updated while servers 2-10 keep handling user requests
+Once server 1 is back up with the new version, you move to server 2, and so on
+Users never notice any interruption because there are always servers running to handle their requests
+
+The key benefit: Zero or minimal downtime. Your service stays available to users throughout the entire update process, which is especially important for websites, apps, or services that need to be available 24/7.

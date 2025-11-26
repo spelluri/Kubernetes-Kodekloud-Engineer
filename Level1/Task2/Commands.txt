@@ -1,0 +1,6 @@
+1. For executing the deployment yaml file :     
+kubectl apply -f deployment.yaml
+
+2. To check the deployments after running step 1 
+kubectl get deployment
+kubectl describe deployment nginx

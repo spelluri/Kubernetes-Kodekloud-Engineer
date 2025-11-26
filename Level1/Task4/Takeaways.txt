@@ -1,0 +1,65 @@
+Key Takeaways
+
+Requests = Minimum guarantee (what you need)
+Limits = Maximum allowed (what you can't exceed)
+Memory limit exceeded = Pod gets killed
+CPU limit exceeded = Pod gets throttled (slowed down)
+Always set limits in production = Prevents one app from ruining everything
+
+Bottom line: Resource limits are like setting house rules so everyone can live together peacefully! 🏠
+
+
+
+## Why Use Resource Limits?
+
+### ✅ Benefits:
+
+1. **Fair sharing** - Everyone gets resources
+2. **Prevent crashes** - One bad app can't kill others
+3. **Predictable costs** - Know how much resources you need
+4. **Better scheduling** - Kubernetes knows where to place pods
+5. **Stability** - Cluster stays healthy
+
+### ❌ Without limits:
+
+1. One app can consume everything
+2. Other apps crash or slow down
+3. Unpredictable behavior
+4. Hard to plan capacity
+
+---
+
+## Simple Mental Model
+```
+┌─────────────────────────────────────┐
+│  Your Kubernetes Cluster            │
+│  Total: 4 CPUs, 8 GB RAM            │
+├─────────────────────────────────────┤
+│                                     │
+│  App A: Request 1 CPU, Limit 1 CPU │
+│         Request 1 GB, Limit 2 GB   │
+│                                     │
+│  App B: Request 1 CPU, Limit 1 CPU │
+│         Request 1 GB, Limit 2 GB   │
+│                                     │
+│  App C: Request 1 CPU, Limit 1 CPU │
+│         Request 1 GB, Limit 2 GB   │
+│                                     │
+│  Remaining: 1 CPU, 5 GB RAM        │
+│                                     │
+└─────────────────────────────────────┘
+
+## What Happens When Limits Are Exceeded?
+
+### Memory Limit Exceeded:
+```
+App tries to use 300 MB (limit is 256 MB)
+→ Kubernetes KILLS the pod 💀
+→ Pod restarts (OOMKilled = Out Of Memory Killed)
+```
+
+### CPU Limit Exceeded:
+```
+App tries to use 0.5 CPU (limit is 0.2 CPU)
+→ Kubernetes THROTTLES it (slows it down) 🐌
+→ App runs slower but doesn't crash
