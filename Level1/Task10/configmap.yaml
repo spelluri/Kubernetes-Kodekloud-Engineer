@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: time-Config
+  namespace: datacenter
+data:
+  TIME_FREQ: "10"

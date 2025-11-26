@@ -1,0 +1,12 @@
+# Create Namespace .
+kubectl create Namespace datacenter
+
+#Create ConfigMap
+kubectl apply -f configmap.yaml
+
+#Create Pod 
+kubectl apply -f pod.yaml
+
+#Verify
+kubectl get pods -n datacenter
+
