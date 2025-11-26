@@ -1,0 +1,10 @@
+ImagePullBackOff means Kubernetes cannot download the container image from the registry. Let me help you troubleshoot!
+
+Common Causes & Solutions
+1. Typo in image name (Most common!)
+2. Image tag doesn't exist.
+3. Image is in a private registry (no credentials)
+4. Network issues / Registry unreachable
+5. Rate limiting (Docker Hub)
+Docker Hub has rate limits for anonymous pulls:
+6. Wrong image pull policy

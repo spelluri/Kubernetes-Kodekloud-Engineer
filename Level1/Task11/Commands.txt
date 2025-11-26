@@ -1,0 +1,20 @@
+# Check the pod status
+kubectl get pods
+kubectl describe pod webserver
+
+#Investigate the complete pod configuration .
+
+# FOund that the image of main container has a typo mistake . (httpd:latests)
+
+# there was no yaml in the host . Generate a yaml file 
+kubectl pod webserver -o yaml > pod.yaml
+
+# Delete the pod with error 
+kubectl delete pod webserver
+
+# Run the pod.yaml and create the pod again.
+kubectl apply -f pod.yaml 
+
+#Verify
+kubectl get pods
+
