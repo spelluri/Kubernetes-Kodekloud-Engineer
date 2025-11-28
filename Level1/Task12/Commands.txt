@@ -1,0 +1,9 @@
+1.) Modify the service nodeport from 30008 to 32165
+
+2.) Change the replicas count from 1 to 5
+
+3.) Update the image from nginx:1.18 to nginx:latest
+
+1. kubectl edit svc nodeport # Edit the port from 30008 to 32165
+2. kubectl scale deployment nginx-deployment --replicas=5
+3. kubectl set image deployment nginx-deployment nginx-container=nginx:latest

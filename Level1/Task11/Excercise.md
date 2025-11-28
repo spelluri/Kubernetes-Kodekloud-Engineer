@@ -8,3 +8,4 @@ Additionally, there's a sidecar container named sidecar-container using the ubun
 Identify and address the issue to ensure the pod is in the running state and the application is accessible.
 
 Note: The kubectl utility on jump_host is configured to interact with the Kubernetes cluster.
+
