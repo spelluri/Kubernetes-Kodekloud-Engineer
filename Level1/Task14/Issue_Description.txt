@@ -1,0 +1,152 @@
+Investigation & Resolution Report: Nginx + PHP-FPM Pod Issue
+
+Pod Name: nginx-phpfpm
+Namespace: default
+ConfigMap Name: nginx-config
+Date: 2025-12-02
+Environment: Kubernetes Cluster
+
+1. Issue Summary
+
+Users reported that the website was not accessible via the front-end interface.
+
+Initial checks showed the pod nginx-phpfpm was Running with no apparent container crashes.
+
+Logs did not show critical errors, but PHP content was not served correctly.
+
+2. Initial Inspection
+
+Checked pod status:
+
+kubectl get pods
+kubectl describe pod nginx-phpfpm
+
+
+Pod: Running, containers ready.
+
+No errors in describe or container logs.
+
+Checked mounts:
+
+kubectl describe pod nginx-phpfpm | grep -i mount -A4
+
+
+Findings:
+
+Container	Mount Path	Volume
+nginx-container	/usr/share/nginx/html	shared-files
+php-fpm-container	/var/www/html	shared-files
+
+Observation: Both containers mount the same volume but at different paths.
+
+This causes PHP-FPM to fail to locate files using the absolute path sent by Nginx.
+
+3. Problem Analysis
+Root Cause
+
+Nginx serves files from /usr/share/nginx/html and passes absolute paths to PHP-FPM.
+
+PHP-FPM container sees the shared volume at /var/www/html.
+
+This mismatch caused PHP-FPM to not find index.php, leading to the website not rendering.
+
+Direct edits to the running pod were not allowed, as volumeMounts cannot be changed on an existing pod.
+
+Why the pod appeared healthy
+
+Containers were running and ready — Kubernetes does not treat “PHP file not found” as a container crash.
+
+The failure was a runtime file path mismatch, not a crash.
+
+4. Resolution Approach
+Chosen Fix
+
+Standardize the volume mount path in both containers to the same directory (/var/www/html).
+
+This ensures that Nginx and PHP-FPM access the same absolute file paths.
+
+Steps Taken
+
+Exported existing pod YAML:
+
+kubectl get pod nginx-phpfpm -o yaml > pod.yaml
+
+
+Cleaned YAML:
+
+Removed all Kubernetes-managed fields (status, uid, resourceVersion, annotations).
+
+Standardized volumeMounts for both containers:
+
+- name: nginx-container
+  volumeMounts:
+    - name: shared-files
+      mountPath: /var/www/html
+
+
+Deleted the old pod:
+
+kubectl delete pod nginx-phpfpm
+
+
+Applied the corrected pod YAML:
+
+kubectl apply -f pod.yaml
+
+
+Copied index.php into the shared volume:
+
+kubectl cp /home/thor/index.php nginx-phpfpm:/var/www/html/index.php -c nginx-container
+
+
+Verified both containers see the same file:
+
+kubectl exec -it nginx-phpfpm -c nginx-container -- ls -l /var/www/html
+kubectl exec -it nginx-phpfpm -c php-fpm-container -- ls -l /var/www/html
+
+
+Accessed website via front-end — functionality restored.
+
+5. Lessons Learned / Notes
+
+Standalone pods cannot have volumeMounts modified directly. Always use the controller or recreate the pod.
+
+Volume path consistency is critical when multiple containers share the same volume.
+
+ConfigMap edits were not required in this case — the issue was purely volume path mismatch.
+
+Always verify both Nginx and PHP-FPM mount points when troubleshooting PHP-FPM integration issues.
+
+6. References / Commands Used
+
+Pod inspection:
+
+kubectl get pods
+kubectl describe pod nginx-phpfpm
+kubectl logs nginx-phpfpm -c nginx-container
+kubectl logs nginx-phpfpm -c php-fpm-container
+
+
+Copying files:
+
+kubectl cp /home/thor/index.php nginx-phpfpm:/var/www/html/index.php -c nginx-container
+
+
+Verifying mounts and files:
+
+kubectl exec -it nginx-phpfpm -c nginx-container -- ls -l /var/www/html
+kubectl exec -it nginx-phpfpm -c php-fpm-container -- ls -l /var/www/html
+
+
+Deleting and recreating pod:
+
+kubectl delete pod nginx-phpfpm
+kubectl apply -f pod.yaml
+
+7. Outcome
+
+Website is fully functional.
+
+Both containers now share the same volume path /var/www/html.
+
+PHP-FPM executes index.php correctly and Nginx serves PHP content without errors.

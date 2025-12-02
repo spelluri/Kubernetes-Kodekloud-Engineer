@@ -1,0 +1,51 @@
+Step 1 — Create the directory (if it doesn’t exist)
+sudo mkdir -p /usr/news-t1q2/
+
+Step 2 — Create the template YAML file
+
+You can use nano or vi to create the file:
+
+sudo nano /usr/news-t1q2/news-t1q2.yml
+
+Step 3 — Add the Pod template content
+
+Paste the following into the file:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: news-nginx-t1q2
+  labels:
+    app: news-nginx
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+  restartPolicy: Always
+
+
+Explanation:
+
+apiVersion: v1 → standard for Pod creation
+
+kind: Pod → defines a Pod
+
+metadata.name → name of the Pod (news-nginx-t1q2)
+
+metadata.labels → allows selecting/filtering the pod easily later
+
+containers → defines a single container using nginx image
+
+restartPolicy: Always → default policy for Pods, ensures it restarts on failure
+
+Step 4 — Save the file and exit
+
+In nano → Ctrl+O (save), Ctrl+X (exit)
+
+Step 5 — Test creating the Pod using the template
+kubectl apply -f /usr/news-t1q2/news-t1q2.yml
+kubectl get pods -l app=news-nginx
+kubectl describe pod news-nginx-t1q2
+
+
+You should see the Pod Running and using the nginx image.

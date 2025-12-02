@@ -1,0 +1,5 @@
+1. check the deployemnts
+kubectl get deployemnts
+2. delete the deployment 
+kubectl delete deployments web-app-t2q4
+

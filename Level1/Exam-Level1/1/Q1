@@ -1,0 +1,4 @@
+The Nautilus application development team aims to test a Pod creation by creating a httpd based Pod on the Kubernetes cluster. The specifications for the same are as follows:
+
+
+Create a Pod named httpd-test-t1q4 using httpd:alpine3.19 image, it must have a label app: httpd

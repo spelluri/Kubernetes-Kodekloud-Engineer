@@ -1,0 +1,8 @@
+An engineer was tasked with creating a Kubernetes Pod template for a specific application deployment within the Kubernetes cluster. To ensure easy modification in the future.
+
+
+The directive is to generate a template file named news-t1q2.yml within the /usr/news-t1q2/ directory on the jump_host. This template will facilitate the creation of a pod named news-nginx-t1q2, utilizing the nginx image.
+
+The objective is to establish a template that streamlines the process of generating the designated pod within the Kubernetes cluster.
+
+Note: The kubectl utility on jump_host has been configured to work with the kubernetes cluster.

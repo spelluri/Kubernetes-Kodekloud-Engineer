@@ -1,0 +1,77 @@
+Postmortem Report – Redis Deployment Incident
+
+Date of Incident: 2025-12-02
+Service / Application: Redis (Deployment: redis-deployment-t4q2)
+Reported By: Nautilus DevOps Team
+Incident Duration: ~13 minutes
+
+1. Incident Summary
+
+During routine modifications to the Redis deployment, the pods became unavailable. Users reported that the Redis service was offline. Investigation revealed that the pods were stuck in ContainerCreating state and failing to start.
+
+2. Impact
+
+Pods affected: redis-deployment-t4q2
+
+Pod status: One pod stuck in ContainerCreating, old pods terminating, no Redis instance available temporarily.
+
+User impact: Redis-dependent applications were unable to access the database during the incident.
+
+Duration: ~13 minutes downtime
+
+3. Root Cause Analysis
+
+Two main issues were identified:
+
+Container Image Typo
+
+The deployment was configured with image: redis:alpin instead of the correct redis:alpine.
+
+Kubernetes was unable to pull the container image, preventing pod creation.
+
+ConfigMap Typo / Missing
+
+The deployment referenced a ConfigMap redis-cofig-t4q2.
+
+The correct ConfigMap was named redis-config-t4q2, leading to a Failed to mount volume error.
+
+This prevented the pod from starting even after the image issue was corrected.
+
+4. Detection & Diagnostics
+
+kubectl get pods → showed pods stuck in ContainerCreating.
+
+kubectl describe pod → identified Failed to mount volume error.
+
+Deployment YAML inspection → revealed image typo and ConfigMap typo.
+
+5. Resolution Steps
+
+Corrected the container image:
+
+kubectl set image deployment/redis-deployment-t4q2 redis-container=redis:alpine
+
+
+Verified / created the correct ConfigMap:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config-t4q2
+data:
+  dummy.conf: "# placeholder configuration"
+
+kubectl apply -f redis-config-t4q2.yml
+
+
+Restarted the deployment:
+
+kubectl rollout restart deployment redis-deployment-t4q2
+
+
+Verified pod status:
+
+kubectl get pods -l app=redis -w
+
+
+Pod redis-deployment-t4q2-68c767758b-qxw2z successfully transitioned to Running.

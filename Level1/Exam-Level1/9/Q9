@@ -1,0 +1,4 @@
+One of the services named service-t5q6 needs some updates, as during deployment some required labels were missing from this service. Make changes to this service as per details mentioned below:
+
+
+Update service-t5q6 service to add a label component: front-end-t5q6.

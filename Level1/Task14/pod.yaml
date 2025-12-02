@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-phpfpm
+  namespace: default
+  labels:
+    app: php-app
+spec:
+  restartPolicy: Always
+  containers:
+    - name: php-fpm-container
+      image: php:7.2-fpm-alpine
+      volumeMounts:
+        - name: shared-files
+          mountPath: /var/www/html
+
+    - name: nginx-container
+      image: nginx:latest
+      volumeMounts:
+        - name: shared-files
+          mountPath: /var/www/html
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+
+  volumes:
+    - name: shared-files
+      emptyDir: {}
+
+    - name: nginx-config-volume
+      configMap:
+        name: nginx-config

@@ -1,0 +1,9 @@
+1. check deployments
+kubectl get deployments
+
+2. rollback the recent release .
+kubectl rollout undo deployment nginx-deployment-t2q2
+
+3. check the rollback 
+kubectl rollout history deployment nginx-deployment-t2q2
+

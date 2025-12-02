@@ -1,0 +1,3 @@
+kubectl label svc service-t5q6 component=front-end-t5q6 --overwrite
+verification 
+kubectl get svc service-t5q6 --show-labels

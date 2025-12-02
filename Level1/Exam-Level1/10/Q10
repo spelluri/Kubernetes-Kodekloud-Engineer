@@ -1,0 +1,4 @@
+The Nautilus DevOps team recently deployed an application on Kubernetes for testing purposes, the deployment name is httpd-deployment-t5q1. Initially, it was intended to test specific features. However, there's a current need to expose this application to test the frontend.
+
+
+To achieve this, a service needs to be created. The service should be named httpd-service-t5q1 with a nodePort set to 30004.

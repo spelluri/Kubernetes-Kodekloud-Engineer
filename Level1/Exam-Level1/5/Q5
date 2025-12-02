@@ -1,0 +1,10 @@
+The Nautilus DevOps team plans to deploy applications on a Kubernetes cluster for the migration of some existing applications. Recently, a team member has been tasked with creating below components:
+
+
+a. Create a ReplicaSet named nginx-replicaset-t3q4 using nginx image with latest tag only (remember to mention tag i.e nginx:latest).
+
+b. Label app should be nginx_app_t3q4, label type should be front-end-t3q4.
+
+c. The container should be named as nginx-container-t3q4, also make sure replicas counts are 4.
+
+Note: The kubectl utility on jump_host has been configured to work with the kubernetes cluster.

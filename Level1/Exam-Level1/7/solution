@@ -1,0 +1,6 @@
+kubectl patch svc purple-app-service-t4q5 \
+> -p '{"spec":{"type":"NodePort","ports":[{"ports":80,"targetPort":80,"nodePort":32232}]}}'
+
+Issue:
+The service was wrongly configured as ClusterIP which lead the pod to be acccessed only within the cluster .
+Hence modified the svc with the above patch command.

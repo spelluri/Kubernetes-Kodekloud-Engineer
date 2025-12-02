@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nautilus-t3q1
+spec:
+  schedule: "0 */9 * * *"
+  jobTemplate: 
+    spec: 
+      template: 
+        spec:
+          containers:
+            - name: cron-nautilus-t3q1
+              image: nginx:latest
+              command: ["echo", "Welcome to xfusioncorp!"]
+          restartPolicy: OnFailure

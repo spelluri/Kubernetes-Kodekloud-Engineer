@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-test-t1q4
+  labels: 
+    app: httpd
+spec:
+  containers:
+  - name: httpd-container
+    image: httpd:alpine3.19
+  restartPolicy: Never
